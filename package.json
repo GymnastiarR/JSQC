@@ -1,0 +1,26 @@
+{
+  "name": "jsqc",
+  "version": "1.0.0",
+  "description": "Convert your object to SQLite query",
+  "main": "Schema.js",
+  "type": "module",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Gymnastiar",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GymnastiarR/jsqc.git"
+  },
+  "bugs": {
+    "url": "https://github.com/GymnastiarR/jsqc/issues"
+  },
+  "homepage": "https://github.com/GymnastiarR/jsqc#readme",
+  "devDependencies": {
+    "@babel/core": "^7.22.5",
+    "@babel/preset-env": "^7.22.5",
+    "babel-jest": "^29.5.0",
+    "jest": "^29.5.0"
+  }
+}
