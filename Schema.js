@@ -21,14 +21,18 @@ import { select, del, join } from "./index.js";
 
 // console.log( joinQuery );
 
-const testing = select( {
-    tableName: "user",
-    limit: {
-        num: 10
-    }
-} );
+try {
+    const testing = await select( {
+        tableName: "user",
+        condition: {
+            id: 10
+        }
+    } );
+    console.log( "Test" );
+} catch ( error ) {
+    console.log( error.message );
+}
 
-console.log( testing );
 
 // const query = select( {
 //     tableName: "USER",

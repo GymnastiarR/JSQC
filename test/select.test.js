@@ -149,3 +149,15 @@ test( "NESTED FROM", () => {
     };
     expect( select( query ) ).toBe( "SELECT * FROM (SELECT * FROM user ORDER BY name ASC) LIMIT 1" );
 } );
+
+test( "IN", () => {
+    const query = {
+        tableName: "user",
+        condition: {
+            address: {
+                in: [ "Jakarta", "Bandung" ]
+            }
+        }
+    };
+    expect( select( query ) ).toBe( "SELECT * FROM user WHERE address IN ('Jakarta', 'Bandung')" );
+} );
