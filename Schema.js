@@ -1,34 +1,15 @@
 import { select, del, join } from "./index.js";
 
-// const joinQuery = join( {
-//     select: {
-//         orders: [ "orderId" ],
-//         customers: [ "customerId", "customerName" ],
-//     },
-//     join: {
-//         type: "LEFT",
-//         right: {
-//             orders: "customerId",
-//         },
-//         left: {
-//             customers: "customerId",
-//         }
-//     },
-//     order: {
-//         asc: "customerName"
-//     }
-// } );
-
-// console.log( joinQuery );
-
 try {
     const testing = await select( {
         tableName: "user",
         condition: {
-            id: 10
+            id: {
+                equal: 10
+            }
         }
     } );
-    console.log( "Test" );
+    console.log( testing );
 } catch ( error ) {
     console.log( error.message );
 }
