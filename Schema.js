@@ -1,25 +1,34 @@
 import { select, del, join } from "./index.js";
 
-const joinQuery = join( {
-    select: {
-        orders: [ "orderId" ],
-        customers: [ "customerId", "customerName" ],
-    },
-    join: {
-        type: "LEFT",
-        right: {
-            orders: "customerId",
-        },
-        left: {
-            customers: "customerId",
-        }
-    },
-    order: {
-        asc: "customerName"
+// const joinQuery = join( {
+//     select: {
+//         orders: [ "orderId" ],
+//         customers: [ "customerId", "customerName" ],
+//     },
+//     join: {
+//         type: "LEFT",
+//         right: {
+//             orders: "customerId",
+//         },
+//         left: {
+//             customers: "customerId",
+//         }
+//     },
+//     order: {
+//         asc: "customerName"
+//     }
+// } );
+
+// console.log( joinQuery );
+
+const testing = select( {
+    tableName: "user",
+    limit: {
+        num: 10
     }
 } );
 
-console.log( joinQuery );
+console.log( testing );
 
 // const query = select( {
 //     tableName: "USER",
@@ -27,27 +36,13 @@ console.log( joinQuery );
 //         OR: {
 //             age: {
 //                 greaterThan: 20,
-//             },
-//             andWhere: {
-//                 age: {
-//                     lessThan: 30
-//                 },
-//                 name: {
-//                     like: "GYmans"
-//                 }
-//             },
-//             AND: {
-//                 name: {
-//                     like: "%a%"
-//                 },
-//                 age: {
-//                     greaterThan: 20,
-//                     lessThan: 30
-//                 }
-//             },
+//                 lessThan: 30
+//             }
 //         }
 //     }
 // } );
+
+// console.log( query );
 
 // const delQuery = del( {
 //     tableName: "USER",

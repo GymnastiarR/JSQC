@@ -6,12 +6,11 @@ const join = function ( { select, join, order } ) {
             return `${tableName}.${field}`;
         } );
         return result.join( ", " );
-    } )}`;
+    } ).join( ", " )}`;
     return `${rs} FROM ${recursive( join )} ${order ? orderBy( order ) : ''};`;
 };
 
 const recursive = function ( join ) {
-    console.log( Object.values( join.left )[ 0 ] );
     const query = `${join.left.join
         ? `(${recursive( join.left.join )})`
         : Object.keys( join.left )[ 0 ]} ${join.type} JOIN ${join.right.join
