@@ -2,7 +2,7 @@ import select from "../query/select.js";
 
 test( "OR", async () => {
     const query = {
-        tableName: "user",
+        table: "user",
         condition: {
             OR: {
                 age: {
@@ -18,7 +18,7 @@ test( "OR", async () => {
 
 test( "AND", async () => {
     const query = {
-        tableName: "user",
+        table: "user",
         condition: {
             AND: {
                 age: {
@@ -34,7 +34,7 @@ test( "AND", async () => {
 
 test( "NESTED Condition", async () => {
     const query = {
-        tableName: "user",
+        table: "user",
         condition: {
             AND: {
                 isVerify: {
@@ -55,8 +55,8 @@ test( "NESTED Condition", async () => {
 
 test( "Select Spesific Field", async () => {
     const query = {
-        tableName: "user",
-        data: {
+        table: "user",
+        field: {
             id: true,
             name: true,
         },
@@ -77,7 +77,7 @@ test( "Select Spesific Field", async () => {
 
 test( "NESTED condition with LIMIT", async () => {
     const query = {
-        tableName: "user",
+        table: "user",
         condition: {
             AND: {
                 isVerify: {
@@ -100,7 +100,7 @@ test( "NESTED condition with LIMIT", async () => {
 
 test( "Linear Condition", async () => {
     const query = {
-        tableName: "user",
+        table: "user",
         condition: {
             andWhere: {
                 isVerify: {
@@ -111,34 +111,37 @@ test( "Linear Condition", async () => {
                 }
             }
         }
+
     };
     expect( await select( query ) ).toBe( "SELECT * FROM user WHERE isVerify = 1 AND age > 18" );
 } );
 
 test( "ORDER BY", async () => {
     const query = {
-        tableName: "user",
+        table: "user",
         order: {
             ASC: "name"
         }
+
     };
     expect( await select( query ) ).toBe( "SELECT * FROM user ORDER BY name ASC" );
 } );
 
 test( "LIMIT", async () => {
     const query = {
-        tableName: "user",
+        table: "user",
         limit: {
             num: 1,
         }
+
     };
     expect( await select( query ) ).toBe( "SELECT * FROM user LIMIT 1" );
 } );
 
 test( "NESTED FROM", async () => {
     const query = {
-        tableName: {
-            tableName: "user",
+        table: {
+            table: "user",
             order: {
                 ASC: "name"
             }
@@ -146,6 +149,7 @@ test( "NESTED FROM", async () => {
         limit: {
             num: 1,
         },
+
     };
     expect( await select( query ) ).toBe( "SELECT * FROM (SELECT * FROM user ORDER BY name ASC) LIMIT 1" );
 } );

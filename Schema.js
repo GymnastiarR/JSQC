@@ -1,43 +1,22 @@
 import { select, del, join } from "./index.js";
 
-// const joinQuery = join( {
-//     select: {
-//         orders: [ "orderId" ],
-//         customers: [ "customerId", "customerName" ],
-//     },
-//     join: {
-//         type: "LEFT",
-//         right: {
-//             orders: "customerId",
-//         },
-//         left: {
-//             customers: "customerId",
-//         }
-//     },
-//     order: {
-//         asc: "customerName"
-//     }
-// } );
-
-// console.log( joinQuery );
-// try {
-select( {
-    tableName: {
-        tableName: "user",
+try {
+    const testing = await select( {
+        table: "user",
         condition: {
-            order: {
-                ASC: "name"
+            OR: {
+                age: {
+                    equal: 10,
+                    greaterThan: 20
+                },
             }
         }
-    },
-    limit: {
-        num: 10
-    }
-} ).catch( ( err ) => {
-    console.log( err.message );
-} );
+    } );
+    console.log( testing );
+} catch ( error ) {
+    // console.log( error.message );
+}
 
-console.log( "Here" );
 // console.log( testing );
 // } catch ( error ) {
 //     console.log( "Heree" );

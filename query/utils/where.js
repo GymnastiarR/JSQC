@@ -90,14 +90,15 @@ function recursive( data, logicOp ) {
                 if ( condition == 'notLike' ) {
                     return `${logicOperator} NOT LIKE ${data[ logicOperator ][ condition ]}`;
                 }
-                throw Error( "Err" );
+                throw new Error( "Err" );
             } );
             return result.join( ` ${logicOp} ` );
         } );
         return query;
     } catch ( error ) {
-        return error;
+        return ( error );
     }
+
 };
 
 function logicOperatorChecker( data, logicOperator ) {
@@ -118,5 +119,4 @@ function logicOperatorChecker( data, logicOperator ) {
         return `${rs.join( " OR " )}`;
     }
 }
-
 export default recursive;
