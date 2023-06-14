@@ -4,8 +4,11 @@ try {
     const testing = await select( {
         tableName: "user",
         condition: {
-            id: {
-                equal: 10
+            OR: {
+                age: {
+                    equal: 10,
+                    greaterThan: 20
+                },
             }
         }
     } );

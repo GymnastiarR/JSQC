@@ -1,12 +1,18 @@
 import recursive from "./utils/where.js";
 import orderBy from "./utils/orderBy.js";
 
-const select = function ( { tableName, data, condition, order, limit, group } ) {
-    return new Promise( async ( resolve, reject ) => {
+const select = async function ( { tableName, data, condition, order, limit, group } ) {
+    return await new Promise( async ( resolve, reject ) => {
         try {
             let query = '';
             if ( condition ) {
-                query = `WHERE ${await recursive( condition )}`;
+                // const rs = await 
+                recursive( condition ).then( res => {
+                    console.log( res );
+                } );
+                // console.log( rs );
+                // query = `WHERE ${rs}`;
+                // console.log( query );
             }
             if ( group ) {
                 query = `${query && `${query} `}GROUP BY ${group}`;
@@ -17,7 +23,6 @@ const select = function ( { tableName, data, condition, order, limit, group } ) 
             if ( limit ) {
                 query = `${query && `${query} `}LIMIT ${limit.num}${limit.offset && ` OFFSET ${limit.offset}`}`;
             }
-            // console.log( `SELECT ${data ? Object.keys( data ) : '*'} FROM ${typeof tableName === "object" ? `(${select( tableName )})` : `${tableName}`} ${query}` );
             resolve( `SELECT ${data ? Object.keys( data ) : '*'} FROM ${typeof tableName === "object" ? `(${select( tableName )})` : `${tableName}`} ${query}` );
         } catch ( error ) {
             reject( new Error( error ) );

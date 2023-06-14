@@ -1,14 +1,19 @@
 import select from "../select.js";
 
 function recursive( data, logicOp ) {
-    return new Promise( ( resolve, reject ) => {
-        const query = Object.keys( data ).map( ( logicOperator ) => {
+    // console.log( data );
+    return new Promise( async ( resolve, reject ) => {
+        const query = Object.keys( data ).map( async ( logicOperator ) => {
             if ( logicOperator === 'AND' ) {
-                const rs = recursive( data[ logicOperator ], logicOperator );
+                const rs = await recursive( data[ logicOperator ], logicOperator );
                 return `(${rs.join( " AND " )})`;
             }
             if ( logicOperator === 'OR' ) {
-                const rs = recursive( data[ logicOperator ], logicOperator );
+                // recursive( data[ logicOperator ], logicOperator ).then( ( response ) => {
+                //     console.log( response.th );
+                // } );
+                const rs = await recursive( data[ logicOperator ], logicOperator );
+                console.log( rs );
                 return `(${rs.join( " OR " )})`;
             }
             if ( logicOperator === 'andWhere' ) {
@@ -26,14 +31,17 @@ function recursive( data, logicOp ) {
             const result = Object.keys( data[ logicOperator ] ).map( function ( condition ) {
                 if ( condition === 'AND' ) {
                     const rs = recursive( data[ logicOperator ][ condition ], condition );
+                    // console.log( rs );
                     return `(${rs.join( " AND " )})`;
                 }
                 if ( condition === 'OR' ) {
                     const rs = recursive( data[ logicOperator ][ condition ], condition );
+                    // console.log( rs );
                     return `(${rs.join( " OR " )})`;
                 }
                 if ( condition === 'andWhere' ) {
                     const rs = recursive( data[ logicOperator ][ condition ], condition );
+                    console.log( rs );
                     return `${rs.join( " AND " )}`;
                 }
                 if ( condition === 'orWhere' ) {
@@ -91,21 +99,26 @@ function recursive( data, logicOp ) {
                 }
                 reject( `Error : Condition ${condition} not defined` );
             } );
-            reject( `Error : not defined` );
-            return result.join( ` ${logicOp} ` );
+            if ( result.length == 0 ) reject( `Error : not defined` );
+            console.log( result );
+            return ( result.join( ` ${logicOp} ` ) );
         } );
+        console.log( query );
         if ( !query ) throw new Error( "Error" );
         resolve( query );
+        // console.log( query );
     } );
 };
 
 function logicOperatorChecker( data, logicOperator ) {
     if ( logicOperator === 'AND' ) {
         const rs = recursive( data[ logicOperator ], logicOperator );
+        console.log( rs );
         return `(${rs.join( " AND " )})`;
     }
     if ( logicOperator === 'OR' ) {
         const rs = recursive( data[ logicOperator ], logicOperator );
+        console.log( rs );
         return `(${rs.join( " OR " )})`;
     }
     if ( logicOperator === 'andWhere' ) {
