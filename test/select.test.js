@@ -1,6 +1,6 @@
 import select from "../query/select.js";
 
-test( "OR", () => {
+test( "OR", async () => {
     const query = {
         tableName: "user",
         condition: {
@@ -13,10 +13,10 @@ test( "OR", () => {
         }
     };
 
-    expect( select( query ) ).toBe( "SELECT * FROM user WHERE (age > 18 OR age < 30)" );
+    expect( await select( query ) ).toBe( "SELECT * FROM user WHERE (age > 18 OR age < 30)" );
 } );
 
-test( "AND", () => {
+test( "AND", async () => {
     const query = {
         tableName: "user",
         condition: {
@@ -29,10 +29,10 @@ test( "AND", () => {
         }
     };
 
-    expect( select( query ) ).toBe( "SELECT * FROM user WHERE (age > 18 AND age < 30)" );
+    expect( await select( query ) ).toBe( "SELECT * FROM user WHERE (age > 18 AND age < 30)" );
 } );
 
-test( "NESTED Condition", () => {
+test( "NESTED Condition", async () => {
     const query = {
         tableName: "user",
         condition: {
@@ -50,10 +50,10 @@ test( "NESTED Condition", () => {
         }
     };
 
-    expect( select( query ) ).toBe( "SELECT * FROM user WHERE (isVerify = 1 AND (age > 18 OR age <= 30))" );
+    expect( await select( query ) ).toBe( "SELECT * FROM user WHERE (isVerify = 1 AND (age > 18 OR age <= 30))" );
 } );
 
-test( "Select Spesific Field", () => {
+test( "Select Spesific Field", async () => {
     const query = {
         tableName: "user",
         data: {
@@ -72,10 +72,10 @@ test( "Select Spesific Field", () => {
         }
     };
 
-    expect( select( query ) ).toBe( "SELECT id,name FROM user WHERE (isVerify = 1 AND name LIKE %Tiar%)" );
+    expect( await select( query ) ).toBe( "SELECT id,name FROM user WHERE (isVerify = 1 AND name LIKE %Tiar%)" );
 } );
 
-test( "NESTED condition with LIMIT", () => {
+test( "NESTED condition with LIMIT", async () => {
     const query = {
         tableName: "user",
         condition: {
@@ -95,10 +95,10 @@ test( "NESTED condition with LIMIT", () => {
             num: 10
         }
     };
-    expect( select( query ) ).toBe( "SELECT * FROM user WHERE (isVerify = 1 AND (age > 18 OR age <= 30)) LIMIT 10" );
+    expect( await select( query ) ).toBe( "SELECT * FROM user WHERE (isVerify = 1 AND (age > 18 OR age <= 30)) LIMIT 10" );
 } );
 
-test( "Linear Condition", () => {
+test( "Linear Condition", async () => {
     const query = {
         tableName: "user",
         condition: {
@@ -112,30 +112,30 @@ test( "Linear Condition", () => {
             }
         }
     };
-    expect( select( query ) ).toBe( "SELECT * FROM user WHERE isVerify = 1 AND age > 18" );
+    expect( await select( query ) ).toBe( "SELECT * FROM user WHERE isVerify = 1 AND age > 18" );
 } );
 
-test( "ORDER BY", () => {
+test( "ORDER BY", async () => {
     const query = {
         tableName: "user",
         order: {
             ASC: "name"
         }
     };
-    expect( select( query ) ).toBe( "SELECT * FROM user ORDER BY name ASC" );
+    expect( await select( query ) ).toBe( "SELECT * FROM user ORDER BY name ASC" );
 } );
 
-test( "LIMIT", () => {
+test( "LIMIT", async () => {
     const query = {
         tableName: "user",
         limit: {
             num: 1,
         }
     };
-    expect( select( query ) ).toBe( "SELECT * FROM user LIMIT 1" );
+    expect( await select( query ) ).toBe( "SELECT * FROM user LIMIT 1" );
 } );
 
-test( "NESTED FROM", () => {
+test( "NESTED FROM", async () => {
     const query = {
         tableName: {
             tableName: "user",
@@ -147,5 +147,5 @@ test( "NESTED FROM", () => {
             num: 1,
         },
     };
-    expect( select( query ) ).toBe( "SELECT * FROM (SELECT * FROM user ORDER BY name ASC) LIMIT 1" );
+    expect( await select( query ) ).toBe( "SELECT * FROM (SELECT * FROM user ORDER BY name ASC) LIMIT 1" );
 } );

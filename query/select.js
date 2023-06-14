@@ -2,20 +2,26 @@ import recursive from "./utils/where.js";
 import orderBy from "./utils/orderBy.js";
 
 const select = function ( { tableName, data, condition, order, limit } ) {
-    let query = '';
-    if ( condition ) {
-        // queryCondition = `WHERE ${recursive( condition ).replace( /,/g, ' ' )}`;
-        query = `WHERE ${recursive( condition )}`;
-    }
-    console.log( query );
-    if ( order ) {
-        query = `${query ? `${query} ` : ""}${orderBy( order )}`;
-    }
-    if ( limit ) {
-        query = `${query ? `${query} ` : ""}LIMIT ${limit.num}${limit.offset ? ` OFFSET ${limit.offset}` : ''}`;
-    }
-    console.log( query );
-    return `SELECT ${data ? Object.keys( data ) : '*'} FROM ${typeof tableName === "object" ? `(${select( tableName )})` : `${tableName}`} ${query}`;
+    return new Promise( async ( resolve, reject ) => {
+        try {
+            let query = '';
+            if ( condition ) {
+                const rs = recursive( condition );
+                if ( rs instanceof Error ) reject( rs );
+                query = `WHERE ${recursive( condition )}`;
+            }
+            if ( order ) {
+                query = `${query ? `${query} ` : ""}${orderBy( order )}`;
+            }
+            if ( limit ) {
+                query = `${query ? `${query} ` : ""}LIMIT ${limit.num}${limit.offset ? ` OFFSET ${limit.offset}` : ''}`;
+            }
+            const fieldName = typeof tableName === "object" ? `(${await select( tableName )})` : `${tableName}`;
+            resolve( `SELECT ${data ? Object.keys( data ) : '*'} FROM ${fieldName} ${query}` );
+        } catch ( error ) {
+            reject( error );
+        }
+    } );
 };
 
 export default select;

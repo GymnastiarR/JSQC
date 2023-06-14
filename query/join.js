@@ -19,5 +19,4 @@ const recursive = function ( join ) {
 
     return query;
 };
-
 export default join;

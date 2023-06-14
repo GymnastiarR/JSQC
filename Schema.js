@@ -20,16 +20,29 @@ import { select, del, join } from "./index.js";
 // } );
 
 // console.log( joinQuery );
-
-const testing = select( {
-    tableName: "user",
+// try {
+select( {
+    tableName: {
+        tableName: "user",
+        condition: {
+            order: {
+                ASC: "name"
+            }
+        }
+    },
     limit: {
         num: 10
     }
+} ).catch( ( err ) => {
+    console.log( err.message );
 } );
 
-console.log( testing );
-
+console.log( "Here" );
+// console.log( testing );
+// } catch ( error ) {
+//     console.log( "Heree" );
+//     console.log( error.message );
+// }
 // const query = select( {
 //     tableName: "USER",
 //     condition: {
