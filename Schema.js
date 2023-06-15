@@ -1,5 +1,9 @@
 import { select, del, join } from "./index.js";
 
+const test = () => {
+    console.log( "test" );
+};
+
 async function testing() {
     try {
         const rs = await join( {

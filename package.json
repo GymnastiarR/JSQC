@@ -2,7 +2,7 @@
   "name": "jsqc",
   "version": "1.0.0",
   "description": "Convert your object to SQLite query",
-  "main": "Schema.js",
+  "main": "index.js",
   "type": "module",
   "scripts": {
     "test": "jest"
