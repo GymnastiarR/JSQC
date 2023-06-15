@@ -1,6 +1,6 @@
 
-import foreign from "./utils/isForeign";
-import primary from "./utils/isPrimary";
+import foreign from "./utils/isForeign.js";
+import primary from "./utils/isPrimary.js";
 
 const createTable = function () {
     return `CREATE TABLE IF NOT EXIST ${tableName} (${Object.keys( schema ).map( fieldName => {
