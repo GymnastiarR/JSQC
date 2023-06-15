@@ -90,7 +90,7 @@ function recursive( data, logicOp ) {
                 if ( condition == 'notLike' ) {
                     return `${logicOperator} NOT LIKE ${data[ logicOperator ][ condition ]}`;
                 }
-                throw new Error( "Err" );
+                throw new Error( `Error : ${condition} is not a condition` );
             } );
             return result.join( ` ${logicOp} ` );
         } );
@@ -101,22 +101,4 @@ function recursive( data, logicOp ) {
 
 };
 
-function logicOperatorChecker( data, logicOperator ) {
-    if ( logicOperator === 'AND' ) {
-        const rs = recursive( data[ logicOperator ], logicOperator );
-        return `(${rs.join( " AND " )})`;
-    }
-    if ( logicOperator === 'OR' ) {
-        const rs = recursive( data[ logicOperator ], logicOperator );
-        return `(${rs.join( " OR " )})`;
-    }
-    if ( logicOperator === 'andWhere' ) {
-        const rs = recursive( data[ logicOperator ], logicOperator );
-        return `${rs.join( " AND " )}`;
-    }
-    if ( logicOperator === 'orWhere' ) {
-        const rs = recursive( data[ logicOperator ], logicOperator );
-        return `${rs.join( " OR " )}`;
-    }
-}
 export default recursive;

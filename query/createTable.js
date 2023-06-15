@@ -1,3 +1,7 @@
+
+import foreign from "./utils/isForeign";
+import primary from "./utils/isPrimary";
+
 const createTable = function () {
     return `CREATE TABLE IF NOT EXIST ${tableName} (${Object.keys( schema ).map( fieldName => {
         const field = schema[ fieldName ];

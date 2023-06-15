@@ -53,13 +53,32 @@ test( "NESTED Condition", async () => {
     expect( await select( query ) ).toBe( "SELECT * FROM user WHERE (isVerify = 1 AND (age > 18 OR age <= 30))" );
 } );
 
-test( "Select Spesific Field", async () => {
+test( "Select Spesific Fields", async () => {
     const query = {
         table: "user",
-        field: {
+        fields: {
             id: true,
             name: true,
         },
+        condition: {
+            AND: {
+                isVerify: {
+                    equal: 1
+                },
+                name: {
+                    like: "%Tiar%"
+                }
+            }
+        }
+    };
+
+    expect( await select( query ) ).toBe( "SELECT id,name FROM user WHERE (isVerify = 1 AND name LIKE %Tiar%)" );
+} );
+
+test( "Select Spesific Fields", async () => {
+    const query = {
+        table: "user",
+        fields: [ "id", "name" ],
         condition: {
             AND: {
                 isVerify: {
@@ -152,4 +171,20 @@ test( "NESTED FROM", async () => {
 
     };
     expect( await select( query ) ).toBe( "SELECT * FROM (SELECT * FROM user ORDER BY name ASC) LIMIT 1" );
+} );
+
+test( "Reject condition", async () => {
+    try {
+        const query = {
+            table: "User",
+            condition: {
+                name: {
+                    greterThan: 20
+                }
+            }
+        };
+        const rs = await select( query );
+    } catch ( error ) {
+        expect( error.message ).toBe( "Error : greterThan is not a condition" );
+    }
 } );

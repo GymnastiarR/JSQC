@@ -1,13 +1,19 @@
 import orderBy from "./utils/orderBy.js";
 
 const join = function ( { select, join, order } ) {
-    const rs = `SELECT ${Object.keys( select ).map( ( tableName ) => {
-        const result = select[ tableName ].map( ( field ) => {
-            return `${tableName}.${field}`;
-        } );
-        return result.join( ", " );
-    } ).join( ", " )}`;
-    return `${rs} FROM ${recursive( join )} ${order ? orderBy( order ) : ''};`;
+    return new Promise( ( resolve, reject ) => {
+        try {
+            const rs = `SELECT ${Object.keys( select ).map( ( tableName ) => {
+                const result = select[ tableName ].map( ( field ) => {
+                    return `${tableName}.${field}`;
+                } );
+                return result.join( ", " );
+            } ).join( ", " )}`;
+            resolve( `${rs} FROM ${recursive( join )} ${order ? orderBy( order ) : ''};` );
+        } catch ( error ) {
+            reject( error );
+        }
+    } );
 };
 
 const recursive = function ( join ) {

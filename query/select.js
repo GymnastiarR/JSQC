@@ -1,7 +1,7 @@
 import recursive from "./utils/where.js";
 import orderBy from "./utils/orderBy.js";
 
-const select = function ( { table, field, condition, order, limit } ) {
+const select = function ( { table, fields, condition, order, limit } ) {
     return new Promise( async ( resolve, reject ) => {
         try {
             let query = '';
@@ -16,8 +16,11 @@ const select = function ( { table, field, condition, order, limit } ) {
             if ( limit ) {
                 query = `${query ? `${query} ` : ""}LIMIT ${limit.num}${limit.offset ? ` OFFSET ${limit.offset}` : ''}`;
             }
+            if ( Array.isArray( fields ) ) {
+
+            }
             const fieldName = typeof table === "object" ? `(${await select( table )})` : `${table}`;
-            resolve( `SELECT ${field ? Object.keys( field ) : '*'} FROM ${fieldName} ${query}` );
+            resolve( `SELECT ${fields ? Array.isArray( fields ) ? fields : Object.keys( fields ).map( ( field ) => field ) : '*'} FROM ${fieldName} ${query}` );
         } catch ( error ) {
             reject( error );
         }
