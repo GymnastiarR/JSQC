@@ -1,4 +1,4 @@
-import select from "../query/select.js";
+import select from "../src/select.js";
 
 test( "OR", async () => {
     const query = {

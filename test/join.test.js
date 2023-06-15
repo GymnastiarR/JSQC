@@ -1,4 +1,4 @@
-import join from "../query/join.js";
+import join from "../src/join.js";
 
 test( "Join two table", async () => {
     const query = {
