@@ -1,38 +1,43 @@
 function recursive( data, logicOp ) {
     try {
         const query = Object.keys( data ).map( ( logicOperator ) => {
+
+            if ( typeof data[ logicOperator ] == 'string' ) return `${logicOperator} = '${data[ logicOperator ]}'`;
+            if ( typeof data[ logicOperator ] == 'number' ) return `${logicOperator} = ${data[ logicOperator ]}`;
+            if ( typeof data[ logicOperator ] == 'boolean' ) return `${logicOperator} = ${data[ logicOperator ]}`;
+
             if ( logicOperator === 'AND' ) {
                 const rs = recursive( data[ logicOperator ], logicOperator );
-                return `(${rs.join( " AND " )})`;
+                return `(${!( Array.isArray( rs ) ) ? rs : rs.join( " AND " )})`;
             }
             if ( logicOperator === 'OR' ) {
                 const rs = recursive( data[ logicOperator ], logicOperator );
-                return `(${rs.join( " OR " )})`;
+                return `(${!( Array.isArray( rs ) ) ? rs : rs.join( " OR " )})`;
             }
             if ( logicOperator === 'andWhere' ) {
                 const rs = recursive( data[ logicOperator ], logicOperator );
-                return `${rs.join( " AND " )}`;
+                return `${!( Array.isArray( rs ) ) ? rs : rs.join( " AND " )}`;
             }
             if ( logicOperator === 'orWhere' ) {
                 const rs = recursive( data[ logicOperator ], logicOperator );
-                return `${rs.join( " OR " )}`;
+                return `${!( Array.isArray( rs ) ) ? rs : rs.join( " OR " )}`;
             }
             const result = Object.keys( data[ logicOperator ] ).map( function ( condition ) {
                 if ( condition === 'AND' ) {
                     const rs = recursive( data[ logicOperator ][ condition ], condition );
-                    return `(${rs.join( " AND " )})`;
+                    return `(${!( Array.isArray( rs ) ) ? rs : rs.join( " AND " )})`;
                 }
                 if ( condition === 'OR' ) {
                     const rs = recursive( data[ logicOperator ][ condition ], condition );
-                    return `(${rs.join( " OR " )})`;
+                    return `(${!( Array.isArray( rs ) ) ? rs : rs.join( " OR " )})`;
                 }
                 if ( condition === 'andWhere' ) {
                     const rs = recursive( data[ logicOperator ][ condition ], condition );
-                    return `${rs.join( " AND " )}`;
+                    return `${!( Array.isArray( rs ) ) ? rs : rs.join( " AND " )}`;
                 }
                 if ( condition === 'orWhere' ) {
                     const rs = recursive( data[ logicOperator ][ condition ], condition );
-                    return `${rs.join( " OR " )}`;
+                    return `${!( Array.isArray( rs ) ) ? rs : rs.join( " OR " )}`;
                 }
 
 
@@ -58,16 +63,10 @@ function recursive( data, logicOp ) {
                     return `${logicOperator} != ${data[ logicOperator ][ condition ]}`;
                 }
                 if ( condition == 'in' ) {
-                    return `${logicOperator} IN ${data[ logicOperator ][ condition ]}`;
+                    return `${logicOperator} IN (${( data[ logicOperator ][ condition ] ).map( ( value ) => `'${value}'` ).join( ',' )})`;
                 }
                 if ( condition == 'notIn' ) {
                     return `${logicOperator} NOT IN ${data[ logicOperator ][ condition ]}`;
-                }
-                if ( condition == 'between' ) {
-                    return `${logicOperator} BETWEEN ${data[ logicOperator ][ condition ]}`;
-                }
-                if ( condition == 'notBetween' ) {
-                    return `${logicOperator} NOT BETWEEN ${data[ logicOperator ][ condition ]}`;
                 }
                 if ( condition == 'isNull' ) {
                     return `${logicOperator} IS NULL`;
@@ -94,7 +93,7 @@ function recursive( data, logicOp ) {
             } );
             return result.join( ` ${logicOp} ` );
         } );
-        return query;
+        return ( !Array.isArray( query ) ? query : query.join( " AND " ) );
     } catch ( error ) {
         return ( error );
     }

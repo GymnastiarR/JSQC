@@ -1,6 +1,6 @@
 {
   "name": "jsqc",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Convert your object to SQLite query",
   "main": "index.js",
   "type": "module",

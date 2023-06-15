@@ -188,3 +188,37 @@ test( "Reject condition", async () => {
         expect( error.message ).toBe( "Error : greterThan is not a condition" );
     }
 } );
+
+test( "IN condition", async () => {
+    const query = {
+        table: "User",
+        condition: {
+            id: {
+                in: [ 1, 2, 3 ]
+            }
+        }
+    };
+    expect( await select( query ) ).toBe( "SELECT * FROM User WHERE id IN ('1','2','3')" );
+} );
+
+test( "simple shortcut", async () => {
+    const query = {
+        table: "User",
+        condition: {
+            id: 1
+        }
+    };
+    expect( await select( query ) ).toBe( "SELECT * FROM User WHERE id = 1" );
+} );
+
+
+test( "simple shortcut with two condition", async () => {
+    const query = {
+        table: "User",
+        condition: {
+            id: 1,
+            name: "Gymnas",
+        }
+    };
+    expect( await select( query ) ).toBe( `SELECT * FROM User WHERE id = 1 AND name = 'Gymnas'` );
+} );
