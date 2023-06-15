@@ -3,7 +3,7 @@ import select from "../src/select.js";
 test( "OR", async () => {
     const query = {
         table: "user",
-        condition: {
+        where: {
             OR: {
                 age: {
                     greaterThan: 18,
@@ -19,7 +19,7 @@ test( "OR", async () => {
 test( "AND", async () => {
     const query = {
         table: "user",
-        condition: {
+        where: {
             AND: {
                 age: {
                     greaterThan: 18,
@@ -32,10 +32,10 @@ test( "AND", async () => {
     expect( await select( query ) ).toBe( "SELECT * FROM user WHERE (age > 18 AND age < 30)" );
 } );
 
-test( "NESTED Condition", async () => {
+test( "NESTED where", async () => {
     const query = {
         table: "user",
-        condition: {
+        where: {
             AND: {
                 isVerify: {
                     equal: 1
@@ -60,7 +60,7 @@ test( "Select Spesific Fields", async () => {
             id: true,
             name: true,
         },
-        condition: {
+        where: {
             AND: {
                 isVerify: {
                     equal: 1
@@ -79,7 +79,7 @@ test( "Select Spesific Fields", async () => {
     const query = {
         table: "user",
         fields: [ "id", "name" ],
-        condition: {
+        where: {
             AND: {
                 isVerify: {
                     equal: 1
@@ -94,10 +94,10 @@ test( "Select Spesific Fields", async () => {
     expect( await select( query ) ).toBe( "SELECT id,name FROM user WHERE (isVerify = 1 AND name LIKE %Tiar%)" );
 } );
 
-test( "NESTED condition with LIMIT", async () => {
+test( "NESTED where with LIMIT", async () => {
     const query = {
         table: "user",
-        condition: {
+        where: {
             AND: {
                 isVerify: {
                     equal: 1
@@ -117,10 +117,10 @@ test( "NESTED condition with LIMIT", async () => {
     expect( await select( query ) ).toBe( "SELECT * FROM user WHERE (isVerify = 1 AND (age > 18 OR age <= 30)) LIMIT 10" );
 } );
 
-test( "Linear Condition", async () => {
+test( "Linear where", async () => {
     const query = {
         table: "user",
-        condition: {
+        where: {
             andWhere: {
                 isVerify: {
                     equal: 1
@@ -173,11 +173,11 @@ test( "NESTED FROM", async () => {
     expect( await select( query ) ).toBe( "SELECT * FROM (SELECT * FROM user ORDER BY name ASC) LIMIT 1" );
 } );
 
-test( "Reject condition", async () => {
+test( "Reject where", async () => {
     try {
         const query = {
             table: "User",
-            condition: {
+            where: {
                 name: {
                     greterThan: 20
                 }
@@ -189,10 +189,10 @@ test( "Reject condition", async () => {
     }
 } );
 
-test( "IN condition", async () => {
+test( "IN where", async () => {
     const query = {
         table: "User",
-        condition: {
+        where: {
             id: {
                 in: [ 1, 2, 3 ]
             }
@@ -204,7 +204,7 @@ test( "IN condition", async () => {
 test( "simple shortcut", async () => {
     const query = {
         table: "User",
-        condition: {
+        where: {
             id: 1
         }
     };
@@ -212,10 +212,10 @@ test( "simple shortcut", async () => {
 } );
 
 
-test( "simple shortcut with two condition", async () => {
+test( "simple shortcut with two where", async () => {
     const query = {
         table: "User",
-        condition: {
+        where: {
             id: 1,
             name: "Gymnas",
         }

@@ -1,14 +1,14 @@
 import recursive from "./utils/where.js";
 import orderBy from "./utils/orderBy.js";
 
-const select = function ( { table, fields, condition, order, limit } ) {
+const select = function ( { table, fields, where, order, limit } ) {
     return new Promise( async ( resolve, reject ) => {
         try {
             let query = '';
-            if ( condition ) {
-                const rs = recursive( condition );
+            if ( where ) {
+                const rs = recursive( where );
                 if ( rs instanceof Error ) reject( rs );
-                query = `WHERE ${recursive( condition )}`;
+                query = `WHERE ${recursive( where )}`;
             }
             if ( order ) {
                 query = `${query ? `${query} ` : ""}${orderBy( order )}`;

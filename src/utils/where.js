@@ -6,40 +6,13 @@ function recursive( data, logicOp ) {
             if ( typeof data[ logicOperator ] == 'number' ) return `${logicOperator} = ${data[ logicOperator ]}`;
             if ( typeof data[ logicOperator ] == 'boolean' ) return `${logicOperator} = ${data[ logicOperator ]}`;
 
-            if ( logicOperator === 'AND' ) {
-                const rs = recursive( data[ logicOperator ], logicOperator );
-                return `(${!( Array.isArray( rs ) ) ? rs : rs.join( " AND " )})`;
-            }
-            if ( logicOperator === 'OR' ) {
-                const rs = recursive( data[ logicOperator ], logicOperator );
-                return `(${!( Array.isArray( rs ) ) ? rs : rs.join( " OR " )})`;
-            }
-            if ( logicOperator === 'andWhere' ) {
-                const rs = recursive( data[ logicOperator ], logicOperator );
-                return `${!( Array.isArray( rs ) ) ? rs : rs.join( " AND " )}`;
-            }
-            if ( logicOperator === 'orWhere' ) {
-                const rs = recursive( data[ logicOperator ], logicOperator );
-                return `${!( Array.isArray( rs ) ) ? rs : rs.join( " OR " )}`;
-            }
-            const result = Object.keys( data[ logicOperator ] ).map( function ( condition ) {
-                if ( condition === 'AND' ) {
-                    const rs = recursive( data[ logicOperator ][ condition ], condition );
-                    return `(${!( Array.isArray( rs ) ) ? rs : rs.join( " AND " )})`;
-                }
-                if ( condition === 'OR' ) {
-                    const rs = recursive( data[ logicOperator ][ condition ], condition );
-                    return `(${!( Array.isArray( rs ) ) ? rs : rs.join( " OR " )})`;
-                }
-                if ( condition === 'andWhere' ) {
-                    const rs = recursive( data[ logicOperator ][ condition ], condition );
-                    return `${!( Array.isArray( rs ) ) ? rs : rs.join( " AND " )}`;
-                }
-                if ( condition === 'orWhere' ) {
-                    const rs = recursive( data[ logicOperator ][ condition ], condition );
-                    return `${!( Array.isArray( rs ) ) ? rs : rs.join( " OR " )}`;
-                }
+            let rs = isLogicOperator( data[ logicOperator ], logicOperator );
+            if ( rs ) return rs;
 
+            const result = Object.keys( data[ logicOperator ] ).map( function ( condition ) {
+
+                let rs = isLogicOperator( data[ logicOperator ][ condition ], condition );
+                if ( rs ) return rs;
 
                 if ( condition === 'equal' ) {
                     return `${logicOperator} = ${data[ logicOperator ][ condition ]}`;
@@ -98,6 +71,26 @@ function recursive( data, logicOp ) {
         return ( error );
     }
 
+};
+
+const isLogicOperator = function ( data, logicOperator ) {
+    if ( logicOperator === 'AND' ) {
+        const rs = recursive( data, logicOperator );
+        return `(${!( Array.isArray( rs ) ) ? rs : rs.join( " AND " )})`;
+    }
+    if ( logicOperator === 'OR' ) {
+        const rs = recursive( data, logicOperator );
+        return `(${!( Array.isArray( rs ) ) ? rs : rs.join( " OR " )})`;
+    }
+    if ( logicOperator === 'andWhere' ) {
+        const rs = recursive( data, logicOperator );
+        return `${!( Array.isArray( rs ) ) ? rs : rs.join( " AND " )}`;
+    }
+    if ( logicOperator === 'orWhere' ) {
+        const rs = recursive( data, logicOperator );
+        return `${!( Array.isArray( rs ) ) ? rs : rs.join( " OR " )}`;
+    }
+    return false;
 };
 
 export default recursive;
