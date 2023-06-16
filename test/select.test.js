@@ -222,3 +222,18 @@ test( "simple shortcut with two where", async () => {
     };
     expect( await select( query ) ).toBe( `SELECT * FROM User WHERE id = 1 AND name = 'Gymnas'` );
 } );
+
+test( "test aja nih ya", async () => {
+    const query = {
+        table: "User",
+        fields: {
+            user: [ "id", "name" ],
+            order: [ "id", "sum" ]
+        },
+        where: {
+            id: 1,
+            name: "Gymnas",
+        }
+    };
+    expect( await select( query ) ).toBe( `SELECT user.id,user.name,order.id,order.sum FROM User WHERE id = 1 AND name = 'Gymnas'` );
+} );

@@ -1,7 +1,25 @@
 import select from "./src/select.js";
 try {
     const query = {
-        table: "user",
+        fields: {
+            user: [ "userId", "name", "age" ],
+            order: [ "orderId", "customerId" ],
+            history: [ "historyId", "userId" ]
+        },
+        join: {
+            type: "INNER",
+            on: {
+                user: {
+                    user: "userId",
+                    type: "LEFT",
+                    on: {
+                        user: "userId",
+                        history: "userId"
+                    }
+                },
+                order: "customerId"
+            }
+        },
         where: {
             AND: {
                 name: "Gymnas",
